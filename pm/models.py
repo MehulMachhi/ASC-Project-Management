@@ -9,7 +9,7 @@ class TestCategory(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -21,7 +21,7 @@ class TestPriority(models.Model):
     description = models.CharField(max_length=200)  # e.g., "Critical - Must test"
     order = models.PositiveSmallIntegerField(unique=True)
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.name} - {self.description}"
 
     class Meta:
@@ -34,7 +34,7 @@ class TestEnvironment(models.Model):
     description = models.TextField(blank=True)
     base_url = models.URLField(blank=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
 
@@ -134,7 +134,7 @@ class TestCase(models.Model):
         help_text="Estimated time to execute this test case"
     )
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.project.name} - {self.title}"
 
     class Meta:
@@ -170,5 +170,5 @@ class TestStep(models.Model):
         ordering = ['step_number']
         unique_together = ['test_case' , 'step_number']
 
-    def _str_(self):
+    def __str__(self):
         return f"Step {self.step_number} - {self.test_case.title}"

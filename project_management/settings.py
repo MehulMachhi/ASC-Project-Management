@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'pm',
+   
 ]
 
 MIDDLEWARE = [

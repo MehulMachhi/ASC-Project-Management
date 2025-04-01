@@ -16,7 +16,7 @@ from django.db import models
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('user' , 'position' , 'department' , 'phone' , 'is_active')
-    list_filter = ('is_active' , 'position' , 'department')
+    list_filter = ('is_active' , 'position' , 'department', 'user', 'phone', 'address', 'skills',)
     search_fields = ('user__username' , 'user__first_name' , 'user__last_name' , 'position' , 'department')
     raw_id_fields = ('user' ,)
 
@@ -124,7 +124,7 @@ class TaskInline(admin.TabularInline):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name' , 'team' , 'project_manager' , 'start_date' , 'end_date' ,
-                    'status' , 'priority' , 'task_completion_ratio' , 'budget_status')
+                    'status' , 'priority' , 'budget_status')
     list_filter = ('status' , 'priority' , 'team' , 'is_archived')
     search_fields = ('name' , 'description' , 'team__name' , 'project_manager__user__username')
     readonly_fields = ('created_at' , 'updated_at')
@@ -154,20 +154,20 @@ class ProjectAdmin(admin.ModelAdmin):
         }) ,
     )
 
-    def task_completion_ratio(self , obj):
-        total_tasks = obj.tasks.count()
-        if total_tasks == 0:
-            return "No tasks"
-        completed_tasks = obj.tasks.filter(status='completed').count()
-        percentage = (completed_tasks / total_tasks) * 100
-        return format_html(
-            '<div style="width:100px; background-color: #f8f9fa; border: 1px solid #dee2e6;">'
-            '<div style="width: {}%; background-color: #28a745; color: white; text-align: center;">'
-            '{:.0f}%</div></div>' ,
-            percentage , percentage
-        )
+    # def task_completion_ratio(self , obj):
+    #     total_tasks = obj.tasks.count()
+    #     if total_tasks == 0:
+    #         return "No tasks"
+    #     completed_tasks = obj.tasks.filter(status='completed').count()
+    #     percentage = (completed_tasks / total_tasks) * 100
+    #     return(
+    #         '<div style="width:100px; background-color: #f8f9fa; border: 1px solid #dee2e6;">'
+    #         '<div style="width: {}%; background-color: #28a745; color: white; text-align: center;">'
+    #         '{:.0f}%</div></div>' ,
+    #         percentage , percentage
+    #     )
 
-    task_completion_ratio.short_description = 'Completion'
+    # task_completion_ratio.short_description = 'Completion'
 
     def budget_status(self , obj):
         if not obj.budget:
