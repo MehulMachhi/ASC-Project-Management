@@ -122,7 +122,8 @@ class TestCase(models.Model):
     created_by = models.ForeignKey(
         User ,
         on_delete=models.PROTECT ,
-        related_name='created_tests'
+        related_name='created_tests',
+        null=True
     )
 
     # Timing

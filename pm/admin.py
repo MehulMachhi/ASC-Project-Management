@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 from django.contrib import admin
 from django.utils.html import format_html
@@ -50,7 +50,7 @@ class TestEnvironmentAdmin(admin.ModelAdmin):
 
 
 @admin.register(TestCase)
-class TestCaseAdmin(admin.ModelAdmin):
+class TestCaseAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     inlines = [TestStepInline]
 
     list_display = (
