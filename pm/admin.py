@@ -5,15 +5,15 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django import forms
 from .models import TestCase , TestCategory , TestPriority , TestEnvironment , TestStep
-
+from .resources import TestCaseResource
 
 class TestStepInline(admin.TabularInline):
     model = TestStep
-    extra = 1  # Number of empty forms to display
-    fields = ('step_number' , 'action' , 'expected_result' , 'actual_result' , 'status' , 'screenshot')
+    extra = 1
+    fields = ('step_number', 'action', 'expected_result', 'actual_result', 'status', 'screenshot')
     ordering = ['step_number']
-
-    def get_extra(self , request , obj=None , **kwargs):
+    
+    def get_extra(self, request, obj=None, **kwargs):
         """Return 3 empty forms when creating new test case, 1 when editing"""
         if obj is None:
             return 3
@@ -49,8 +49,13 @@ class TestEnvironmentAdmin(admin.ModelAdmin):
     search_fields = ('name' , 'description')
 
 
+# @admin.register(TestCase)
+# class TestCaseAdmin(ImportExportModelAdmin):
+#     inlines = [TestStepInline]
+
 @admin.register(TestCase)
-class TestCaseAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class TestCaseAdmin(ImportExportModelAdmin):
+    resource_class = TestCaseResource  
     inlines = [TestStepInline]
 
     list_display = (
@@ -195,7 +200,7 @@ class TestCaseAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 # Optional: Register TestStep model separately if you want to manage them independently
 @admin.register(TestStep)
-class TestStepAdmin(admin.ModelAdmin):
+class TestStepAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('test_case' , 'step_number' , 'action' , 'status')
     list_filter = ('status' , 'test_case__project')
     search_fields = ('action' , 'expected_result' , 'test_case__title')
